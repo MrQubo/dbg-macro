@@ -43,6 +43,12 @@ if (DBG_MACRO_ENABLE_TESTS)
     target_link_libraries(${PROJECT_NAME}-tests-macro_disabled ${PROJECT_NAME} Catch2::Catch2)
     catch_discover_tests(${PROJECT_NAME}-tests-macro_disabled)
 
+    # unit tests with DBG_MACRO_SINGLE_LINE defined
+    add_executable(${PROJECT_NAME}-tests-single_line tests/main.cpp tests/basic.cpp)
+    target_compile_options(${PROJECT_NAME}-tests-single_line PRIVATE ${WARNING_FLAGS} ${ADDITIONAL_FLAGS} -DDBG_MACRO_NO_WARNING -DDBG_MACRO_SINGLE_LINE)
+    target_link_libraries(${PROJECT_NAME}-tests-single_line ${PROJECT_NAME} Catch2::Catch2)
+    catch_discover_tests(${PROJECT_NAME}-tests-single_line)
+
     # dbg(…) example file
     add_executable(${PROJECT_NAME}-example tests/example.cpp)
     target_compile_options(${PROJECT_NAME}-example PRIVATE ${WARNING_FLAGS} ${ADDITIONAL_FLAGS} -DDBG_MACRO_NO_WARNING)

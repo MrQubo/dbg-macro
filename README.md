@@ -119,13 +119,14 @@ int main() {
 * Set the `DBG_MACRO_DISABLE` flag to disable the `dbg(…)` macro (i.e. to make it a no-op).
 * Set the `DBG_MACRO_NO_WARNING` flag to disable the *"'dbg.h' header is included in your code base"* warnings.
 * Set the `DBG_MACRO_FORCE_COLOR` flag to force colored output and skip tty checks.
+* Set the `DBG_MACRO_SINGLE_LINE` to print all arguments passed to `dbg(…)` on a single line.
 
 ## Advanced features
 
 ### Multiple arguments
 
 You can pass multiple arguments to the `dbg(…)` macro. The output of
-`dbg(x, y, z)` is same as `dbg(x); dbg(y); dbg(z);`:
+`dbg(x, y, z)` is same as `dbg(x); dbg(y); dbg(z);`, unless `DBG_MACRO_SINGLE_LINE` is defined:
 ``` c++
 dbg(42, "hello world", false);
 ```

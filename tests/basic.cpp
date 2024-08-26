@@ -67,7 +67,23 @@ TEST_CASE("side effects") {
 }
 
 TEST_CASE("multiple arguments") {
-  SECTION("output format") {
+#ifdef DBG_MACRO_SINGLE_LINE
+  SECTION("output single line") {
+    // The output of dbg(x, y) should fit on one line.
+    std::stringstream ss;
+    const auto orig_buf = std::cerr.rdbuf(ss.rdbuf());
+    dbg(42, "test");
+    std::cerr.rdbuf(orig_buf);
+
+    std::string lines[2];
+    for (int i = 0; i < 2; i++) {
+      std::getline(ss, lines[i]);
+    }
+    CHECK(lines[1] == "");
+    CHECK(ss.eof());
+  }
+#else  // DBG_MACRO_SINGLE_LINE
+  SECTION("output format multiple lines") {
     // The output of dbg(x, y) should be same as dbg(x); dbg(y).
     std::stringstream ss;
     const auto orig_buf = std::cerr.rdbuf(ss.rdbuf());
@@ -84,6 +100,7 @@ TEST_CASE("multiple arguments") {
     CHECK(lines[0] == lines[2]);  // output for 42
     CHECK(lines[1] == lines[3]);  // output for "test"
   }
+#endif  // DBG_MACRO_SINGLE_LINE
 
   SECTION("expression") {
     // It should return the last expression.
